@@ -1,0 +1,24 @@
+{
+  "appId": "com.feedshort.app",
+  "appName": "FeedShort",
+  "webDir": ".",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#000000"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#000000",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#000000",
+      "overlaysWebView": true
+    }
+  }
+}

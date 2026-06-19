@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="FeedShort - Short Video Feed">
+  <title>FeedShort</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-logo">
+      <span class="logo-text">Feed<span class="logo-accent">Short</span></span>
+    </div>
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- Top Header -->
+  <header class="top-header" id="topHeader">
+    <div class="header-left">
+      <button class="icon-btn" id="liveBtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span class="live-dot"></span>
+      </button>
+    </div>
+    <div class="header-tabs">
+      <button class="tab-btn" data-tab="following">Following</button>
+      <button class="tab-btn active" data-tab="foryou">For You</button>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" id="searchHeaderBtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Feed -->
+  <main class="feed-container" id="feedContainer">
+    <!-- Videos injected by JS -->
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-page="home">
+      <div class="nav-icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </div>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-item" data-page="search">
+      <div class="nav-icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+      <span class="nav-label">Discover</span>
+    </button>
+    <button class="nav-item create-nav" data-page="create">
+      <div class="create-btn-outer">
+        <div class="create-btn-inner">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </div>
+      </div>
+    </button>
+    <button class="nav-item" data-page="inbox">
+      <div class="nav-icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <span class="nav-label">Inbox</span>
+      <div class="nav-badge">3</div>
+    </button>
+    <button class="nav-item" data-page="profile">
+      <div class="nav-icon-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="nav-label">Profile</span>
+    </button>
+  </nav>
+
+  <!-- Heart animation (double-tap like) -->
+  <div class="heart-pop" id="heartPop">❤️</div>
+
+  <!-- Mute Indicator -->
+  <div class="mute-toast" id="muteToast">
+    <span id="muteIcon">🔇</span>
+    <span id="muteText">Muted</span>
+  </div>
+
+  <!-- Comment Drawer -->
+  <div class="backdrop" id="backdropEl"></div>
+
+  <div class="comment-drawer" id="commentDrawer">
+    <div class="drawer-handle-bar"></div>
+    <div class="drawer-header">
+      <h3 class="drawer-title">Comments <span id="commentCountLabel">0</span></h3>
+      <button class="close-drawer-btn" id="closeCommentBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="comment-list" id="commentList">
+      <!-- Comments injected by JS -->
+    </div>
+    <div class="comment-input-bar">
+      <img src="https://i.pravatar.cc/100?img=20" alt="Me" class="comment-my-avatar">
+      <input type="text" class="comment-input" id="commentInput" placeholder="Add comment...">
+      <button class="comment-send-btn" id="commentSendBtn">Post</button>
+    </div>
+  </div>
+
+  <!-- Share Modal -->
+  <div class="share-modal" id="shareModal">
+    <div class="drawer-handle-bar"></div>
+    <h3 class="drawer-title" style="margin-bottom:16px">Share to</h3>
+    <div class="share-grid">
+      <div class="share-item" onclick="copyLink()">
+        <div class="share-icon" style="background:#333">🔗</div>
+        <span class="share-label">Copy Link</span>
+      </div>
+      <div class="share-item">
+        <div class="share-icon" style="background:#25D366">💬</div>
+        <span class="share-label">WhatsApp</span>
+      </div>
+      <div class="share-item">
+        <div class="share-icon" style="background:#E1306C">📸</div>
+        <span class="share-label">Instagram</span>
+      </div>
+      <div class="share-item">
+        <div class="share-icon" style="background:#1DA1F2">🐦</div>
+        <span class="share-label">Twitter</span>
+      </div>
+      <div class="share-item">
+        <div class="share-icon" style="background:#4267B2">👥</div>
+        <span class="share-label">Facebook</span>
+      </div>
+      <div class="share-item">
+        <div class="share-icon" style="background:#FF0000">▶️</div>
+        <span class="share-label">YouTube</span>
+      </div>
+      <div class="share-item">
+        <div class="share-icon" style="background:#6C5CE7">📧</div>
+        <span class="share-label">Email</span>
+      </div>
+      <div class="share-item">
+        <div class="share-icon" style="background:#333">⬇️</div>
+        <span class="share-label">Save</span>
+      </div>
+    </div>
+    <button class="share-cancel-btn" id="closeShareBtn">Cancel</button>
+  </div>
+
+  <!-- Search Page -->
+  <div class="page-overlay" id="searchPage">
+    <div class="search-page-header">
+      <div class="search-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search users, videos, tags..." class="search-input-field">
+        <button class="search-clear-btn" id="searchClearBtn" style="display:none">✕</button>
+      </div>
+      <button class="back-btn" id="searchBackBtn">Cancel</button>
+    </div>
+    <div class="search-content">
+      <div class="trending-section">
+        <h4 class="section-title">Trending Hashtags</h4>
+        <div class="tag-list">
+          <div class="tag-item">#fyp <span class="tag-count">2.1B</span></div>
+          <div class="tag-item">#viral <span class="tag-count">890M</span></div>
+          <div class="tag-item">#indonesia <span class="tag-count">412M</span></div>
+          <div class="tag-item">#dance <span class="tag-count">350M</span></div>
+          <div class="tag-item">#funny <span class="tag-count">290M</span></div>
+          <div class="tag-item">#lifestyle <span class="tag-count">220M</span></div>
+          <div class="tag-item">#food <span class="tag-count">180M</span></div>
+          <div class="tag-item">#travel <span class="tag-count">155M</span></div>
+        </div>
+      </div>
+      <div class="trending-section">
+        <h4 class="section-title">Trending Creators</h4>
+        <div class="creator-list" id="trendingCreators">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Page -->
+  <div class="page-overlay" id="profilePage">
+    <div class="profile-header">
+      <button class="back-btn-icon" id="profileBackBtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <h3 class="profile-header-name">Profile</h3>
+      <button class="icon-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+        </svg>
+      </button>
+    </div>
+    <div class="profile-content">
+      <div class="profile-hero">
+        <img src="https://i.pravatar.cc/100?img=20" alt="My Profile" class="profile-avatar">
+        <h2 class="profile-username">@myusername</h2>
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <span class="stat-value">128</span>
+            <span class="stat-label">Following</span>
+          </div>
+          <div class="profile-stat">
+            <span class="stat-value">9.4K</span>
+            <span class="stat-label">Followers</span>
+          </div>
+          <div class="profile-stat">
+            <span class="stat-value">84.2K</span>
+            <span class="stat-label">Likes</span>
+          </div>
+        </div>
+        <p class="profile-bio">Content creator 🎬 | Sharing moments ✨<br>#lifestyle #travel #food</p>
+        <div class="profile-actions">
+          <button class="profile-edit-btn">Edit Profile</button>
+          <button class="profile-share-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+              <polyline points="16 6 12 2 8 6"/>
+              <line x1="12" y1="2" x2="12" y2="15"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="profile-tabs">
+        <button class="profile-tab active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </button>
+        <button class="profile-tab">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+        <button class="profile-tab">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+            <path d="M4.93 4.93 19.07 19.07"/>
+          </svg>
+        </button>
+      </div>
+      <div class="profile-videos-grid" id="profileVideosGrid">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toastEl"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Register Service Worker for PWA / APK support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
