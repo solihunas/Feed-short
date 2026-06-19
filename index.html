@@ -9,8 +9,8 @@
   <meta name="theme-color" content="#000000">
   <meta name="description" content="FeedShort - Short Video Feed">
   <title>FeedShort</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./assets/icon.svg">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -285,7 +285,7 @@
     // Register Service Worker for PWA / APK support
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
   </script>

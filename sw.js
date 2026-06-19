@@ -1,12 +1,13 @@
 // Service Worker — FeedShort PWA
 const CACHE_NAME = 'feedshort-v1';
+const BASE = '/Feed-short';
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/js/data.js',
-  '/js/app.js',
-  '/manifest.json'
+  BASE + '/',
+  BASE + '/index.html',
+  BASE + '/css/style.css',
+  BASE + '/js/data.js',
+  BASE + '/js/app.js',
+  BASE + '/manifest.json'
 ];
 
 self.addEventListener('install', (e) => {

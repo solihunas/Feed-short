@@ -2,7 +2,7 @@
   "name": "FeedShort",
   "short_name": "FeedShort",
   "description": "Short Video Feed — TikTok-style app",
-  "start_url": "/",
+  "start_url": "/Feed-short/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#000000",
