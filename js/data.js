@@ -1,234 +1,233 @@
 // =============================================
-//  FEED DATA — Video feed items & comments
+//  FEED DATA — IPI Digital Trading Feed
 // =============================================
+
+const IPI_AVATAR = './assets/avatar-ipi.png';
+
+const IPI_USER = {
+  id: 'ipi_digital',
+  username: '@ipi_digital',
+  displayName: 'IPI Digital',
+  avatar: IPI_AVATAR,
+  verified: true,
+  following: false
+};
 
 const FEED_DATA = [
   {
     id: 1,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    thumbnail: 'https://picsum.photos/seed/v1/400/711',
-    user: {
-      id: 'u1',
-      username: '@andika_explorer',
-      displayName: 'Andika Explorer',
-      avatar: 'https://i.pravatar.cc/150?img=1',
-      verified: true,
-      following: false
-    },
-    description: 'Pemandangan alam yang luar biasa indah! Ini tempat favorit saya setiap weekend 🌅✨',
-    hashtags: ['#fyp', '#nature', '#viral', '#indonesia'],
-    music: 'Acoustic Chill — Lo-fi Beats',
-    likes: '234.5K',
-    comments: '1.2K',
-    shares: '8.9K',
-    likeCount: 234500,
-    commentCount: 1200,
+    type: 'image',                         // image | video
+    imageUrl: './assets/thumb-01.png',
+    thumbnail: './assets/thumb-01.png',
+    user: { ...IPI_USER },
+    description: 'BTC/USD H1 — Konfirmasi SELL di area resistance 62,255 📉 Price menunjukkan penolakan kuat, waspada penurunan lanjutan!',
+    hashtags: ['#btcusd', '#trading', '#analisa', '#crypto'],
+    music: '🎵 IPI Digital — Market Update',
+    likes: '12.4K',
+    comments: '284',
+    shares: '1.2K',
+    likeCount: 12400,
+    commentCount: 284,
     isLiked: false,
     comments_data: [
-      { id: 'c1', user: '@rina_santoso', avatar: 'https://i.pravatar.cc/150?img=5', text: 'Wah indah banget! Dimana nih lokasinya?', time: '2j', likes: 342 },
-      { id: 'c2', user: '@budi_creator', avatar: 'https://i.pravatar.cc/150?img=7', text: 'Vibes-nya chill banget, auto healing 🙏', time: '3j', likes: 128 },
-      { id: 'c3', user: '@sari_wanderer', avatar: 'https://i.pravatar.cc/150?img=9', text: 'Kontennya selalu aesthetic, love it! 😍', time: '5j', likes: 87 },
-      { id: 'c4', user: '@dimas_foto', avatar: 'https://i.pravatar.cc/150?img=11', text: 'Kamera apa yang dipake bang?', time: '6j', likes: 65 },
-      { id: 'c5', user: '@putri_travel', avatar: 'https://i.pravatar.cc/150?img=13', text: 'Masuk bucket list deh tempat ini! 🗺️', time: '8j', likes: 43 }
+      { id: 'c1', user: '@trader_andi', avatar: IPI_AVATAR, text: 'Akurasi sinyalnya mantap banget! Sudah profit 💰', time: '1j', likes: 87 },
+      { id: 'c2', user: '@crypto_budi', avatar: IPI_AVATAR, text: 'Entry di mana min untuk SELL ini?', time: '2j', likes: 43 },
+      { id: 'c3', user: '@fx_rina', avatar: IPI_AVATAR, text: 'Analisa selalu tepat, makasih IPI! 🙏', time: '3j', likes: 31 }
     ]
   },
   {
     id: 2,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-    thumbnail: 'https://picsum.photos/seed/v2/400/711',
-    user: {
-      id: 'u2',
-      username: '@sari_chef',
-      displayName: 'Sari Kitchen',
-      avatar: 'https://i.pravatar.cc/150?img=2',
-      verified: false,
-      following: true
-    },
-    description: 'Resep rahasia ayam geprek level dewa 🍗🔥 Coba deh, dijamin nagih!',
-    hashtags: ['#kuliner', '#masakanrumah', '#foodtok', '#resep'],
-    music: 'Cooking Vibes — Chill Kitchen',
-    likes: '89.2K',
-    comments: '3.4K',
-    shares: '12.1K',
-    likeCount: 89200,
-    commentCount: 3400,
-    isLiked: true,
+    type: 'image',
+    imageUrl: './assets/thumb-02.png',
+    thumbnail: './assets/thumb-02.png',
+    user: { ...IPI_USER },
+    description: 'BTC/USD H1 — SELL signal terkonfirmasi! 🔴 Target area 61,912 — 61,826. Risk management tetap diperhatikan ya traders!',
+    hashtags: ['#sell', '#btc', '#sinyal', '#profit'],
+    music: '🎵 IPI Digital — Market Update',
+    likes: '18.7K',
+    comments: '412',
+    shares: '2.1K',
+    likeCount: 18700,
+    commentCount: 412,
+    isLiked: false,
     comments_data: [
-      { id: 'c1', user: '@mama_masak', avatar: 'https://i.pravatar.cc/150?img=15', text: 'Udah dicoba tadi, enak banget! Thanks resepnya sis 🙏', time: '1j', likes: 521 },
-      { id: 'c2', user: '@foody_jakarta', avatar: 'https://i.pravatar.cc/150?img=17', text: 'Sambelnya pake apa aja?', time: '2j', likes: 234 },
-      { id: 'c3', user: '@chef_dadang', avatar: 'https://i.pravatar.cc/150?img=19', text: 'Teknik memasaknya bener banget! Pro banget ini 👨‍🍳', time: '4j', likes: 156 }
+      { id: 'c1', user: '@signal_haris', avatar: IPI_AVATAR, text: 'Udah SELL dari tadi, floating profit nih 🔥', time: '45m', likes: 124 },
+      { id: 'c2', user: '@newbie_trade', avatar: IPI_AVATAR, text: 'Cara baca chartnya gimana min?', time: '1j', likes: 56 },
+      { id: 'c3', user: '@pro_trader_id', avatar: IPI_AVATAR, text: 'Zona supply-nya valid banget! Clean setup 👍', time: '2j', likes: 89 }
     ]
   },
   {
     id: 3,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4',
-    thumbnail: 'https://picsum.photos/seed/v3/400/711',
-    user: {
-      id: 'u3',
-      username: '@rizky_otomotif',
-      displayName: 'Rizky Otomotif',
-      avatar: 'https://i.pravatar.cc/150?img=3',
-      verified: true,
-      following: false
-    },
-    description: 'Road trip Jawa–Bali solo? Ini pengalaman lengkapnya guys! Episode 1 🚗💨',
-    hashtags: ['#roadtrip', '#otomotif', '#traveling', '#viral'],
-    music: 'Road Trip Anthem — Indie Rock',
-    likes: '445.8K',
-    comments: '6.7K',
-    shares: '31.2K',
-    likeCount: 445800,
-    commentCount: 6700,
+    type: 'image',
+    imageUrl: './assets/thumb-03.png',
+    thumbnail: './assets/thumb-03.png',
+    user: { ...IPI_USER },
+    description: 'BTC/USD H1 — Sinyal BUY masuk! 🟢 Area demand kuat di 61,285. Target take profit bertahap. TP1: 62,255 | TP2: 62,898',
+    hashtags: ['#buy', '#btc', '#demand', '#ipidigital'],
+    music: '🎵 IPI Digital — Market Update',
+    likes: '24.1K',
+    comments: '567',
+    shares: '3.4K',
+    likeCount: 24100,
+    commentCount: 567,
     isLiked: false,
     comments_data: [
-      { id: 'c1', user: '@traveler_indo', avatar: 'https://i.pravatar.cc/150?img=21', text: 'Solo trip kaya gini emang beda feelnya! 🔥', time: '30m', likes: 892 },
-      { id: 'c2', user: '@mobil_tips', avatar: 'https://i.pravatar.cc/150?img=23', text: 'Budget totalnya berapa bang?', time: '1j', likes: 445 },
-      { id: 'c3', user: '@biker_nusa', avatar: 'https://i.pravatar.cc/150?img=25', text: 'Nunggu episode 2 nih!!', time: '2j', likes: 267 },
-      { id: 'c4', user: '@eko_jalan', avatar: 'https://i.pravatar.cc/150?img=27', text: 'Recommend banget buat yang mau solo trip perdana', time: '3j', likes: 189 }
+      { id: 'c1', user: '@winner_trade', avatar: IPI_AVATAR, text: 'BUY dari 61,285 udah kena TP1! Alhamdulillah 🙌', time: '30m', likes: 213 },
+      { id: 'c2', user: '@siska_fx', avatar: IPI_AVATAR, text: 'SL-nya di mana min?', time: '1j', likes: 78 },
+      { id: 'c3', user: '@btc_lover', avatar: IPI_AVATAR, text: 'Demand zone-nya jelas banget, nice!', time: '2j', likes: 95 }
     ]
   },
   {
     id: 4,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-    thumbnail: 'https://picsum.photos/seed/v4/400/711',
-    user: {
-      id: 'u4',
-      username: '@luna_dance',
-      displayName: 'Luna Dance Studio',
-      avatar: 'https://i.pravatar.cc/150?img=4',
-      verified: true,
-      following: false
-    },
-    description: 'Choreografi terbaru! Part ke-3 dari Dance Challenge bulan ini 💃🕺 Duet sama siapa?',
-    hashtags: ['#dance', '#challenge', '#trending', '#fyp'],
-    music: 'Blinding Lights — The Weeknd (Slowed)',
-    likes: '1.2M',
-    comments: '18.4K',
-    shares: '89.3K',
-    likeCount: 1200000,
-    commentCount: 18400,
+    type: 'image',
+    imageUrl: './assets/thumb-04.png',
+    thumbnail: './assets/thumb-04.png',
+    user: { ...IPI_USER },
+    description: 'BTC/USD H1 — Update chart! 📊 Price kembali ke area 63,074 setelah bounce dari demand. Momentum bullish masih terjaga!',
+    hashtags: ['#btcanalysis', '#bullish', '#crypto', '#update'],
+    music: '🎵 IPI Digital — Market Update',
+    likes: '9.8K',
+    comments: '198',
+    shares: '876',
+    likeCount: 9800,
+    commentCount: 198,
     isLiked: false,
     comments_data: [
-      { id: 'c1', user: '@dance_lover99', avatar: 'https://i.pravatar.cc/150?img=29', text: 'Gerakannya smooth banget, belajar dimana kak?? 😭', time: '15m', likes: 2341 },
-      { id: 'c2', user: '@bella_moves', avatar: 'https://i.pravatar.cc/150?img=31', text: 'Udah duet sama aku! Cek di profile aku 💕', time: '45m', likes: 1203 },
-      { id: 'c3', user: '@hiphop_id', avatar: 'https://i.pravatar.cc/150?img=33', text: 'Koreografinya 10/10 🔥🔥🔥', time: '1j', likes: 876 }
+      { id: 'c1', user: '@hold_team', avatar: IPI_AVATAR, text: 'Masih hold dari bawah, gas terus BTC! 🚀', time: '2j', likes: 67 },
+      { id: 'c2', user: '@dika_chart', avatar: IPI_AVATAR, text: 'Resistance berikutnya di mana min?', time: '3j', likes: 45 }
     ]
   },
   {
     id: 5,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-    thumbnail: 'https://picsum.photos/seed/v5/400/711',
-    user: {
-      id: 'u5',
-      username: '@tech_review_id',
-      displayName: 'TechReview Indonesia',
-      avatar: 'https://i.pravatar.cc/150?img=6',
-      verified: true,
-      following: false
-    },
-    description: 'Review iPhone 16 Pro setelah 30 hari pemakaian. Jujur banget review-nya! 📱',
-    hashtags: ['#techreview', '#iphone', '#gadget', '#fyp'],
-    music: 'Tech Beats — Electronic Future',
-    likes: '567.3K',
-    comments: '9.8K',
-    shares: '42.1K',
-    likeCount: 567300,
-    commentCount: 9800,
+    type: 'image',
+    imageUrl: './assets/thumb-05.png',
+    thumbnail: './assets/thumb-05.png',
+    user: { ...IPI_USER },
+    description: 'BTC/USD H1 — Price di 62,652 menguji level kritis! ⚡ Kalau gagal break, potensi reversal ke bawah. Stay focused traders!',
+    hashtags: ['#breakout', '#btcusd', '#levelkritis', '#alert'],
+    music: '🎵 IPI Digital — Market Update',
+    likes: '15.3K',
+    comments: '334',
+    shares: '1.7K',
+    likeCount: 15300,
+    commentCount: 334,
     isLiked: false,
     comments_data: [
-      { id: 'c1', user: '@apple_fans_id', avatar: 'https://i.pravatar.cc/150?img=35', text: 'Udah punya dari day 1, setuju banget reviewnya!', time: '2j', likes: 1234 },
-      { id: 'c2', user: '@android_camp', avatar: 'https://i.pravatar.cc/150?img=37', text: 'Harganya masih kemahalan sih 😅', time: '3j', likes: 567 },
-      { id: 'c3', user: '@geek_nusantara', avatar: 'https://i.pravatar.cc/150?img=39', text: 'Baterainya gimana bang? Awet ga?', time: '4j', likes: 345 }
+      { id: 'c1', user: '@alert_trader', avatar: IPI_AVATAR, text: 'Mantau terus dari tadi nih, tegang 😅', time: '1j', likes: 112 },
+      { id: 'c2', user: '@risk_manager', avatar: IPI_AVATAR, text: 'Good reminder soal risk management!', time: '2j', likes: 89 }
     ]
   },
   {
     id: 6,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
-    thumbnail: 'https://picsum.photos/seed/v6/400/711',
-    user: {
-      id: 'u6',
-      username: '@yoga_lifestyle',
-      displayName: 'Yoga with Dewi',
-      avatar: 'https://i.pravatar.cc/150?img=8',
-      verified: false,
-      following: false
-    },
-    description: 'Morning yoga 10 menit untuk pemula! Mulai hari dengan energi positif ☀️🧘‍♀️',
-    hashtags: ['#yoga', '#wellness', '#morningroutine', '#sehat'],
-    music: 'Morning Zen — Meditation Sounds',
-    likes: '312.6K',
-    comments: '4.2K',
-    shares: '25.8K',
-    likeCount: 312600,
-    commentCount: 4200,
+    type: 'image',
+    imageUrl: './assets/thumb-06.png',
+    thumbnail: './assets/thumb-06.png',
+    user: { ...IPI_USER },
+    description: 'BTC/USD H1 — BUY setup di 63,568! 🟢 Area demand terkonfirmasi dengan volume. Entry, SL, TP sudah tersedia untuk member IPI!',
+    hashtags: ['#buysetup', '#ipidigital', '#member', '#signalbuy'],
+    music: '🎵 IPI Digital — Market Update',
+    likes: '31.2K',
+    comments: '891',
+    shares: '4.5K',
+    likeCount: 31200,
+    commentCount: 891,
     isLiked: true,
     comments_data: [
-      { id: 'c1', user: '@health_hunter', avatar: 'https://i.pravatar.cc/150?img=41', text: 'Udah 2 minggu konsisten yoga pagi gara2 video ini, thanks kak! 🙏', time: '1j', likes: 789 },
-      { id: 'c2', user: '@mom_of_three', avatar: 'https://i.pravatar.cc/150?img=43', text: 'Cocok banget buat ibu-ibu sibuk seperti aku', time: '2j', likes: 432 },
-      { id: 'c3', user: '@fitnessbro_id', avatar: 'https://i.pravatar.cc/150?img=45', text: 'Combine sama cardio lebih efektif sis', time: '3j', likes: 298 }
+      { id: 'c1', user: '@member_ipi', avatar: IPI_AVATAR, text: 'Sudah dapat full setup di grup member! Mantap 💎', time: '20m', likes: 345 },
+      { id: 'c2', user: '@join_dong', avatar: IPI_AVATAR, text: 'Cara gabung member IPI gimana min?', time: '45m', likes: 156 },
+      { id: 'c3', user: '@profit_hunter', avatar: IPI_AVATAR, text: 'Setup ini clean banget! 10/10 🔥', time: '1j', likes: 234 }
     ]
   },
   {
     id: 7,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    thumbnail: 'https://picsum.photos/seed/v7/400/711',
-    user: {
-      id: 'u7',
-      username: '@comedy_indo',
-      displayName: 'Comedy Central ID',
-      avatar: 'https://i.pravatar.cc/150?img=10',
-      verified: true,
-      following: true
-    },
-    description: 'Ketika bos minta lembur tapi udah ada rencana 😂💀 Relate banget ga? Tag teman kantor kamu!',
-    hashtags: ['#comedy', '#lucu', '#relatable', '#kantoran'],
-    music: 'Funny Background — Circus Beat',
-    likes: '2.1M',
-    comments: '34.2K',
-    shares: '156.7K',
-    likeCount: 2100000,
-    commentCount: 34200,
+    type: 'image',
+    imageUrl: './assets/thumb-07.jpg',
+    thumbnail: './assets/thumb-07.jpg',
+    user: { ...IPI_USER },
+    description: 'BTC/USD H1 — Struktur market lengkap! 📈 BUY 10 lot di 61,345 masih aktif. Price sedang recovery, sabar tunggu TP! 💪',
+    hashtags: ['#btcusd', '#patience', '#holdstrong', '#ipi'],
+    music: '🎵 IPI Digital — Market Update',
+    likes: '22.6K',
+    comments: '445',
+    shares: '2.8K',
+    likeCount: 22600,
+    commentCount: 445,
     isLiked: false,
     comments_data: [
-      { id: 'c1', user: '@office_worker_id', avatar: 'https://i.pravatar.cc/150?img=47', text: 'RELATE BANGET ASTAGA 😭😭😭', time: '20m', likes: 5678 },
-      { id: 'c2', user: '@hr_nusantara', avatar: 'https://i.pravatar.cc/150?img=49', text: 'Hahahaha ini real talk banget', time: '45m', likes: 3421 },
-      { id: 'c3', user: '@startup_life', avatar: 'https://i.pravatar.cc/150?img=51', text: 'Tag si bos langsung ahh 😂', time: '1j', likes: 2109 }
+      { id: 'c1', user: '@sabar_profit', avatar: IPI_AVATAR, text: 'Sabar adalah kunci! Masih hold nih 💪', time: '1j', likes: 167 },
+      { id: 'c2', user: '@newtrader22', avatar: IPI_AVATAR, text: 'Berapa lama biasanya nunggu TP min?', time: '2j', likes: 89 }
     ]
   },
   {
     id: 8,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
-    thumbnail: 'https://picsum.photos/seed/v8/400/711',
-    user: {
-      id: 'u8',
-      username: '@finance_tips_id',
-      displayName: 'Finance Tips ID',
-      avatar: 'https://i.pravatar.cc/150?img=12',
-      verified: true,
-      following: false
-    },
-    description: 'Tips investasi untuk Gen Z mulai dari Rp 10.000! Yuk melek finansial dari sekarang 💰📈',
-    hashtags: ['#investasi', '#finansial', '#genZ', '#tips'],
-    music: 'Success Mindset — Motivational Beats',
-    likes: '891.4K',
-    comments: '15.6K',
-    shares: '67.8K',
-    likeCount: 891400,
-    commentCount: 15600,
+    type: 'image',
+    imageUrl: './assets/thumb-08.jpg',
+    thumbnail: './assets/thumb-08.jpg',
+    user: { ...IPI_USER },
+    description: 'BTC/USD H1 — Multi-entry BUY! 🎯 Dua posisi aktif di 0000 & 61,345. Strategi averaging untuk maksimalkan profit saat BTC naik!',
+    hashtags: ['#averaging', '#multientry', '#strategi', '#btc'],
+    music: '🎵 IPI Digital — Market Update',
+    likes: '19.4K',
+    comments: '523',
+    shares: '2.1K',
+    likeCount: 19400,
+    commentCount: 523,
     isLiked: false,
     comments_data: [
-      { id: 'c1', user: '@investor_muda', avatar: 'https://i.pravatar.cc/150?img=53', text: 'Udah mulai dari bulan kemarin, lumayan hasilnya! 📈', time: '1j', likes: 2345 },
-      { id: 'c2', user: '@broke_student', avatar: 'https://i.pravatar.cc/150?img=55', text: 'Rp 10rb pun bisa invest? Serius?? 😱', time: '2j', likes: 1876 },
-      { id: 'c3', user: '@finance_guru', avatar: 'https://i.pravatar.cc/150?img=57', text: 'Konten edukasinya bagus banget, keep it up! 👏', time: '3j', likes: 987 }
+      { id: 'c1', user: '@averaging_pro', avatar: IPI_AVATAR, text: 'Strategi averaging emang paling ampuh! 📈', time: '1j', likes: 198 },
+      { id: 'c2', user: '@risk_off', avatar: IPI_AVATAR, text: 'Hati-hati juga dengan margin ya guys', time: '2j', likes: 134 }
+    ]
+  },
+  {
+    id: 9,
+    type: 'image',
+    imageUrl: './assets/thumb-09.jpg',
+    thumbnail: './assets/thumb-09.jpg',
+    user: { ...IPI_USER },
+    description: 'BTC/USD H1 — UPDATE POSISI! 🔄 3 posisi BUY aktif sekarang. Price mulai bergerak naik. Target 63,686 dalam jangkauan! 🎯',
+    hashtags: ['#update', '#3posisi', '#btcbull', '#ipidigital'],
+    music: '🎵 IPI Digital — Market Update',
+    likes: '28.9K',
+    comments: '712',
+    shares: '3.8K',
+    likeCount: 28900,
+    commentCount: 712,
+    isLiked: false,
+    comments_data: [
+      { id: 'c1', user: '@gas_terus', avatar: IPI_AVATAR, text: 'Price udah mulai naik! YESS 🚀🚀🚀', time: '30m', likes: 312 },
+      { id: 'c2', user: '@pantau_24', avatar: IPI_AVATAR, text: 'Mantap IPI, analisa selalu on point!', time: '45m', likes: 234 },
+      { id: 'c3', user: '@target_tp', avatar: IPI_AVATAR, text: 'Kapan kira-kira kena TP min? 😍', time: '1j', likes: 156 }
+    ]
+  },
+  {
+    id: 10,
+    type: 'image',
+    imageUrl: './assets/thumb-10.jpg',
+    thumbnail: './assets/thumb-10.jpg',
+    user: { ...IPI_USER },
+    description: '🎉 PROFIT TERKONFIRMASI! BTC/USD sudah menyentuh 64,528! Semua posisi BUY sudah TP! Total floating profit member mencapai ratusan dollar! 💰🚀',
+    hashtags: ['#profit', '#alhamdulillah', '#buktiprofit', '#ipidigital'],
+    music: '🎵 IPI Digital — Profit Alert!',
+    likes: '87.3K',
+    comments: '2.4K',
+    shares: '12.6K',
+    likeCount: 87300,
+    commentCount: 2400,
+    isLiked: true,
+    comments_data: [
+      { id: 'c1', user: '@profit_member', avatar: IPI_AVATAR, text: 'ALHAMDULILLAH! +$347 dari 3 posisi! MAKASIH IPI! 🙌🙌', time: '15m', likes: 892 },
+      { id: 'c2', user: '@baru_join', avatar: IPI_AVATAR, text: 'Wah gila! Gimana cara join member IPI?? 😱', time: '25m', likes: 567 },
+      { id: 'c3', user: '@veteran_trade', avatar: IPI_AVATAR, text: 'Konsisten banget analisanya, respect! 👏', time: '40m', likes: 423 },
+      { id: 'c4', user: '@gas_lagi', avatar: IPI_AVATAR, text: 'Next signal kapan min? Siap masuk lagi! 🔥', time: '1j', likes: 312 }
     ]
   }
 ];
 
-// Trending creators data
+// Trending creators
 const TRENDING_CREATORS = [
-  { username: '@andika_explorer', displayName: 'Andika Explorer', avatar: 'https://i.pravatar.cc/150?img=1', followers: '2.4M', following: false },
-  { username: '@luna_dance', displayName: 'Luna Dance Studio', avatar: 'https://i.pravatar.cc/150?img=4', followers: '8.1M', following: false },
-  { username: '@comedy_indo', displayName: 'Comedy Central ID', avatar: 'https://i.pravatar.cc/150?img=10', followers: '12.3M', following: true },
-  { username: '@sari_chef', displayName: 'Sari Kitchen', avatar: 'https://i.pravatar.cc/150?img=2', followers: '1.8M', following: true },
-  { username: '@tech_review_id', displayName: 'TechReview Indonesia', avatar: 'https://i.pravatar.cc/150?img=6', followers: '5.6M', following: false }
+  { username: '@ipi_digital', displayName: 'IPI Digital', avatar: IPI_AVATAR, followers: '128K', following: false },
+  { username: '@crypto_indo', displayName: 'Crypto Indonesia', avatar: IPI_AVATAR, followers: '89K', following: false },
+  { username: '@signal_pro', displayName: 'Signal Pro ID', avatar: IPI_AVATAR, followers: '67K', following: true },
+  { username: '@btc_analysis', displayName: 'BTC Analysis', avatar: IPI_AVATAR, followers: '45K', following: false },
+  { username: '@forex_master', displayName: 'Forex Master ID', avatar: IPI_AVATAR, followers: '34K', following: false }
 ];
