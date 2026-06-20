@@ -43,6 +43,12 @@
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
       </button>
+      <button class="icon-btn" id="authHeaderBtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </button>
     </div>
   </header>
 
@@ -279,7 +285,160 @@
   <!-- Toast notification -->
   <div class="toast" id="toastEl"></div>
 
+  <!-- ==========================================
+       AUTH MODAL (Login / Register)
+       ========================================== -->
+  <div class="modal-overlay auth-modal" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeAuthModal()">✕</button>
+
+      <div class="auth-logo">
+        <img src="./assets/avatar-ipi.png" alt="FeedShort" class="auth-logo-img">
+        <span class="auth-logo-text">Feed<span style="color:var(--accent)">Short</span></span>
+      </div>
+
+      <h2 class="auth-title" id="authTitle">Login</h2>
+
+      <div class="auth-error" id="authError" style="display:none"></div>
+
+      <div class="auth-form" id="authForm">
+        <!-- Username (hanya untuk register) -->
+        <div class="auth-field-group" id="authUsernameGroup" style="display:none">
+          <label class="auth-label">Username</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon">@</span>
+            <input type="text" id="authUsername" class="auth-input" placeholder="username_anda" autocomplete="username">
+          </div>
+        </div>
+
+        <!-- Display Name (hanya untuk register) -->
+        <div class="auth-field-group" id="authNameGroup" style="display:none">
+          <label class="auth-label">Nama Tampil</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon">👤</span>
+            <input type="text" id="authDisplayName" class="auth-input" placeholder="Nama Anda" autocomplete="name">
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="auth-field-group">
+          <label class="auth-label">Email</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon">✉️</span>
+            <input type="email" id="authEmail" class="auth-input" placeholder="email@anda.com" autocomplete="email">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="auth-field-group">
+          <label class="auth-label">Password</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon">🔒</span>
+            <input type="password" id="authPassword" class="auth-input" placeholder="Minimal 6 karakter" autocomplete="current-password">
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button class="auth-submit-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">
+          <span id="authSpinner" class="btn-spinner" style="display:none"></span>
+          Login
+        </button>
+
+        <!-- Divider -->
+        <div class="auth-divider"><span>atau</span></div>
+
+        <!-- Google Login -->
+        <button class="auth-google-btn" onclick="loginWithGoogle()">
+          <svg width="20" height="20" viewBox="0 0 48 48">
+            <path fill="#FFC107" d="M43.6 20H24v8h11.1C33.4 33.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C33.9 6.4 29.2 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.6-8 19.6-20 0-1.3-.1-2.7-.4-4z"/>
+            <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C33.9 6.4 29.2 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+            <path fill="#4CAF50" d="M24 44c5.1 0 9.8-1.9 13.4-5l-6.2-5.2C29.3 35.6 26.8 36 24 36c-5.2 0-9.4-3.7-11.1-8.5l-6.5 5C9.7 39.7 16.3 44 24 44z"/>
+            <path fill="#1976D2" d="M43.6 20H24v8h11.1c-.8 2.3-2.4 4.2-4.5 5.5l6.2 5.2C41.3 34.9 44 29.8 44 24c0-1.3-.1-2.7-.4-4z"/>
+          </svg>
+          Lanjutkan dengan Google
+        </button>
+      </div>
+
+      <p class="auth-toggle-text" id="authToggleText">
+        Belum punya akun? <button onclick="switchAuthMode('register')" class="auth-link">Daftar</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       UPLOAD MODAL (Creator Upload)
+       ========================================== -->
+  <div class="modal-overlay upload-modal" id="uploadModal">
+    <div class="upload-modal-box">
+      <div class="upload-modal-header">
+        <button class="modal-close" onclick="closeUploadModal()">✕</button>
+        <h3 class="upload-modal-title">Upload Konten</h3>
+        <button class="upload-post-btn" id="uploadPostBtn" onclick="handleUploadSubmit()">Post</button>
+      </div>
+
+      <form class="upload-form" id="uploadForm">
+        <!-- Dropzone / Preview -->
+        <div class="upload-dropzone" id="uploadDropzone" onclick="document.getElementById('mediaFileInput').click()">
+          <div class="dropzone-content">
+            <div class="dropzone-icon">📸</div>
+            <p class="dropzone-text">Tap untuk pilih foto atau video</p>
+            <p class="dropzone-sub">JPG, PNG, MP4 • Maks 100MB • Video < 1 menit</p>
+            <div class="dropzone-btns">
+              <span class="dropzone-btn">🖼️ Foto</span>
+              <span class="dropzone-btn">🎬 Video</span>
+              <span class="dropzone-btn">🗂️ Album</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media preview grid -->
+        <div class="media-preview-grid" id="mediaPreviewGrid"></div>
+
+        <!-- Input file hidden -->
+        <input type="file" id="mediaFileInput" accept="image/*,video/*" multiple style="display:none">
+
+        <!-- Caption -->
+        <div class="upload-field-group">
+          <textarea class="upload-caption" id="uploadCaption" placeholder="Tulis caption... ceritakan analisa atau konten Anda" rows="3" maxlength="500"></textarea>
+          <span class="caption-count"><span id="captionLen">0</span>/500</span>
+        </div>
+
+        <!-- Hashtag -->
+        <div class="upload-field-row">
+          <span class="upload-field-label">#</span>
+          <input type="text" id="uploadHashtags" class="upload-field-input" placeholder="hashtag #btcusd #trading #fyp">
+        </div>
+
+        <!-- Music -->
+        <div class="upload-field-row">
+          <span class="upload-field-label">🎵</span>
+          <input type="text" id="uploadMusic" class="upload-field-input" placeholder="Nama musik / original sound">
+        </div>
+
+        <!-- Visibility -->
+        <div class="upload-field-row">
+          <span class="upload-field-label">👁️</span>
+          <select class="upload-field-input upload-select" id="uploadVisibility">
+            <option value="public">Semua orang</option>
+            <option value="followers">Followers saja</option>
+            <option value="private">Hanya saya</option>
+          </select>
+        </div>
+      </form>
+
+      <!-- Progress bar -->
+      <div class="upload-progress-wrap" id="uploadProgress" style="display:none">
+        <div class="upload-progress-label">Mengupload... <span id="uploadPct">0</span>%</div>
+        <div class="upload-progress-bar">
+          <div class="upload-progress-fill" id="uploadProgressFill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/data.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/firebase-app.js"></script>
   <script src="js/app.js"></script>
   <script>
     // Register Service Worker for PWA / APK support

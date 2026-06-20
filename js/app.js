@@ -46,6 +46,11 @@ function init() {
   buildTrendingCreators();
   buildProfileGrid();
   bindEvents();
+  bindUploadEvents();
+  bindAuthEvents();
+
+  // Init Firebase (handles demo mode internally)
+  if (typeof initFirebase === 'function') initFirebase();
 
   setTimeout(() => {
     dom.loading().classList.add('hidden');
@@ -79,13 +84,31 @@ function createFeedItem(item, index) {
 
   const musicText = item.music + ' · ' + item.music + ' · ';
 
-  // Image or Video content
+  // ---- Media content ----
   let mediaHtml = '';
-  if (item.type === 'image') {
+
+  if (item.type === 'carousel' && item.mediaUrls && item.mediaUrls.length > 1) {
+    // Carousel (multiple images)
+    const slides = item.mediaUrls.map((url, i) =>
+      `<div class="carousel-slide"><img src="${url}" alt="slide ${i+1}" loading="${i === 0 ? 'eager' : 'lazy'}"></div>`
+    ).join('');
+    const dots = item.mediaUrls.map((_, i) =>
+      `<div class="carousel-dot ${i === 0 ? 'active' : ''}" data-dot="${i}"></div>`
+    ).join('');
+
     mediaHtml = `
-      <img class="feed-image" src="${item.imageUrl}" alt="${item.description}" loading="${index < 3 ? 'eager' : 'lazy'}">
+      <div class="carousel-wrap" data-carousel="${index}">
+        <div class="carousel-track" id="carousel-track-${index}">${slides}</div>
+      </div>
+      <div class="carousel-dots" id="carousel-dots-${index}">${dots}</div>
+      <div class="carousel-count" id="carousel-count-${index}">1 / ${item.mediaUrls.length}</div>
+    `;
+  } else if (item.type === 'image') {
+    mediaHtml = `
+      <img class="feed-image" src="${item.imageUrl || item.thumbnail}" alt="" loading="${index < 3 ? 'eager' : 'lazy'}">
     `;
   } else {
+    // Video
     mediaHtml = `
       <img class="video-thumb" src="${item.thumbnail}" alt="" loading="lazy">
       <video
@@ -164,16 +187,62 @@ function createFeedItem(item, index) {
     </div>
   `;
 
-  // Bind events for video items
-  if (item.type !== 'image') {
+  // Bind events
+  if (item.type === 'carousel') {
+    bindCarouselEvents(div, index);
+  } else if (item.type !== 'image') {
     const video = div.querySelector('.video-el');
     bindVideoEvents(video, div, index);
   }
 
-  // Tap to like on image items
   bindTapEvents(div, index);
-
   return div;
+}
+
+// ===========================
+//  CAROUSEL EVENTS
+// ===========================
+function bindCarouselEvents(container, index) {
+  const track = container.querySelector(`#carousel-track-${index}`);
+  if (!track) return;
+
+  const totalSlides = state.feedData[index].mediaUrls.length;
+  let currentSlide = 0;
+  let startX = 0;
+  let isDragging = false;
+
+  function goToSlide(n) {
+    currentSlide = Math.max(0, Math.min(n, totalSlides - 1));
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+    // Update dots
+    container.querySelectorAll('.carousel-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === currentSlide)
+    );
+    const countEl = container.querySelector(`#carousel-count-${index}`);
+    if (countEl) countEl.textContent = `${currentSlide + 1} / ${totalSlides}`;
+  }
+
+  track.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+  }, { passive: true });
+
+  track.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goToSlide(currentSlide + (diff > 0 ? 1 : -1));
+  });
+
+  // Desktop mouse drag
+  track.addEventListener('mousedown', (e) => { startX = e.clientX; isDragging = true; });
+  track.addEventListener('mouseup', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    const diff = startX - e.clientX;
+    if (Math.abs(diff) > 40) goToSlide(currentSlide + (diff > 0 ? 1 : -1));
+  });
 }
 
 // ===========================
@@ -452,11 +521,12 @@ function navigateTo(page) {
       el.classList.toggle('active', el.dataset.page === prev);
     });
   } else if (page === 'create') {
-    showToast('Upload konten — Segera hadir! 🎬');
+    // Buka upload modal
     state.activePage = prev;
     document.querySelectorAll('.nav-item').forEach(el => {
       el.classList.toggle('active', el.dataset.page === prev);
     });
+    openUploadModal();
   }
 }
 
@@ -536,6 +606,14 @@ window.copyLink = function() {
   }
   closeDrawer();
 };
+
+// ===========================
+//  AUTH ERROR (local fallback)
+// ===========================
+function showAuthError(msg) {
+  const el = document.getElementById('authError');
+  if (el) { el.textContent = msg; el.style.display = 'block'; }
+}
 
 // ===========================
 //  TOAST
@@ -663,6 +741,189 @@ function bindEvents() {
     if (e.key === 'l') triggerLike(state.currentIndex);
   });
 }
+
+// ===========================
+//  UPLOAD EVENTS
+// ===========================
+function bindUploadEvents() {
+  const fileInput = document.getElementById('mediaFileInput');
+  const caption   = document.getElementById('uploadCaption');
+  const dropzone  = document.getElementById('uploadDropzone');
+  if (!fileInput) return;
+
+  window._uploadFiles = [];
+
+  fileInput.addEventListener('change', (e) => {
+    addFilesToUpload(Array.from(e.target.files));
+    e.target.value = ''; // reset so same file can be re-selected
+  });
+
+  caption.addEventListener('input', () => {
+    document.getElementById('captionLen').textContent = caption.value.length;
+  });
+
+  // Drag & drop on dropzone
+  dropzone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropzone.classList.add('drag-over');
+  });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('drag-over');
+    addFilesToUpload(Array.from(e.dataTransfer.files));
+  });
+}
+
+function addFilesToUpload(files) {
+  const maxDuration = 60; // max 60 seconds for video
+  const validFiles = files.filter(f =>
+    f.type.startsWith('image/') || f.type.startsWith('video/')
+  );
+
+  validFiles.forEach(file => {
+    if (file.type.startsWith('video/')) {
+      // Check video duration
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.src = URL.createObjectURL(file);
+      video.onloadedmetadata = () => {
+        URL.revokeObjectURL(video.src);
+        if (video.duration > maxDuration) {
+          showToast(`Video terlalu panjang (maks ${maxDuration} detik) ⚠️`);
+          return;
+        }
+        window._uploadFiles.push(file);
+        renderUploadPreviews();
+      };
+    } else {
+      window._uploadFiles.push(file);
+      renderUploadPreviews();
+    }
+  });
+}
+
+function renderUploadPreviews() {
+  const grid    = document.getElementById('mediaPreviewGrid');
+  const dropzone = document.getElementById('uploadDropzone');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  if (window._uploadFiles.length === 0) {
+    dropzone.style.display = 'flex';
+    return;
+  }
+  dropzone.style.display = 'none';
+
+  window._uploadFiles.forEach((file, i) => {
+    const item = document.createElement('div');
+    item.className = 'preview-item';
+    const isVideo = file.type.startsWith('video/');
+    const url = URL.createObjectURL(file);
+
+    item.innerHTML = isVideo
+      ? `<video src="${url}" muted playsinline></video>
+         <span class="preview-type-badge">VIDEO</span>`
+      : `<img src="${url}" alt="preview ${i}">`;
+
+    const removeBtn = document.createElement('span');
+    removeBtn.className = 'preview-remove';
+    removeBtn.textContent = '✕';
+    removeBtn.onclick = (e) => {
+      e.stopPropagation();
+      window._uploadFiles.splice(i, 1);
+      renderUploadPreviews();
+    };
+    item.appendChild(removeBtn);
+    grid.appendChild(item);
+  });
+
+  // Add more button
+  if (window._uploadFiles.length < 10) {
+    const addMore = document.createElement('div');
+    addMore.className = 'preview-add-more';
+    addMore.textContent = '+';
+    addMore.onclick = () => document.getElementById('mediaFileInput').click();
+    grid.appendChild(addMore);
+  }
+}
+
+async function handleUploadSubmit() {
+  const files = window._uploadFiles || [];
+  if (files.length === 0) {
+    showToast('Pilih foto atau video dulu!');
+    return;
+  }
+
+  const caption   = document.getElementById('uploadCaption').value;
+  const hashtags  = document.getElementById('uploadHashtags').value;
+  const music     = document.getElementById('uploadMusic').value;
+
+  // Show progress
+  document.getElementById('uploadProgress').style.display = 'block';
+  document.getElementById('uploadPostBtn').disabled = true;
+
+  if (DEMO_MODE) {
+    // Demo: simulasikan upload
+    let pct = 0;
+    const interval = setInterval(() => {
+      pct += 10;
+      updateUploadProgress(pct);
+      if (pct >= 100) {
+        clearInterval(interval);
+        showToast('Demo: Konten "diupload" berhasil! (Firebase belum dikonfigurasi) 🎉');
+        closeUploadModal();
+      }
+    }, 150);
+    return;
+  }
+
+  await createPost(files, caption, hashtags, music, updateUploadProgress);
+  document.getElementById('uploadPostBtn').disabled = false;
+}
+
+function updateUploadProgress(pct) {
+  document.getElementById('uploadPct').textContent = pct;
+  document.getElementById('uploadProgressFill').style.width = pct + '%';
+}
+
+window.handleUploadSubmit = handleUploadSubmit;
+
+// ===========================
+//  AUTH EVENTS
+// ===========================
+function bindAuthEvents() {
+  document.getElementById('authSubmitBtn').addEventListener('click', handleAuthSubmit);
+  document.getElementById('authPassword').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleAuthSubmit();
+  });
+}
+
+function handleAuthSubmit() {
+  const modal = document.getElementById('authModal');
+  const mode  = modal.dataset.mode || 'login';
+  const email    = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+
+  document.getElementById('authError').style.display = 'none';
+
+  if (!email || !password) {
+    showAuthError('Email dan password harus diisi');
+    return;
+  }
+
+  if (mode === 'register') {
+    const username = document.getElementById('authUsername').value.trim();
+    const name     = document.getElementById('authDisplayName').value.trim();
+    if (!username || !name) { showAuthError('Username dan nama harus diisi'); return; }
+    registerUser(email, password, username, name);
+  } else {
+    loginUser(email, password);
+  }
+}
+
+window.handleAuthSubmit = handleAuthSubmit;
 
 function scrollToNext() {
   const items = document.querySelectorAll('.video-item');
